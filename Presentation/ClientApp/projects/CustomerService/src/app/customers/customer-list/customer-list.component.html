@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <h1 class="mt-4">Customers</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <!-- <i class="fas fa-table mr-1"></i> -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="navbar">
+                        <filter-textbox (changed)="filterChanged($event)"></filter-textbox>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <a class="btn btn-primary float-right" [routerLink]="['/customers', '0']"><i class="fas fa-user-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th (click)="sort('firstName')">First Name</th>
+                            <th (click)="sort('lastName')">Last Name</th>
+                            <th (click)="sort('address')">Address</th>
+                            <th (click)="sort('city')">City</th>
+                            <th (click)="sort('state.name')">State</th>
+                            <th (click)="sort('orderTotal')">Order Total</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th colspan="7">
+                                <pagination [totalItems]="totalRecords" [pageSize]="pageSize" (pageChanged)="pageChanged($event)"></pagination>
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr *ngFor="let customer of filteredCustomers;trackBy:trackby.customer">
+                            <td><img src="assets/images/{{ customer.gender | lowercase }}.png"
+                                    class="card-image" alt="Customer Image" /></td>
+                            <td><a [routerLink]="['/customers',customer.id]">{{ customer.firstName | capitalize }}</a></td>
+                            <td>{{ customer.lastName | capitalize }}</td>
+                            <td>{{ customer.address }}</td>
+                            <td>{{ customer.city | trim }}</td>
+                            <td>{{ customer.state.name }}</td>
+                            <td>{{ customer.orderTotal | currency:'USD':'symbol' }}</td>
+                        </tr>
+                        <tr *ngIf="!customers.length">
+                            <td>&nbsp;</td>
+                            <td colspan="6">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
